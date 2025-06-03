@@ -14,12 +14,13 @@ MySQL - 10.4.27-MariaDB : Database - mahasiswa
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`mahasiswa` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-USE `mahasiswa`;
+
 
 /*Table structure for table `mhs` */
 
 DROP TABLE IF EXISTS `mhs`;
-
+CREATE DATABASE `mahasiswa`;
+USE `mahasiswa`;
 CREATE TABLE `mhs` (
   `NIM` varchar(10) NOT NULL,
   `NAMA` varchar(200) DEFAULT NULL,
