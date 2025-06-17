@@ -40,6 +40,32 @@ public class fMahasiswa extends javax.swing.JFrame {
         fieldIsian(false);
         
     }
+    private void storedta ()throws SQLException{
+        if (!txNIM.getText().equals("")){
+            
+            Connection cnn = koneksi();
+            if(!cnn.isClosed()){
+                PreparedStatement PS = cnn.prepareStatement("INSERT INTO mhs (NIM, NAMA, Alamat) VALUES (?,?,?);");
+                PS.setString(1, txNIM.getText());
+                PS.setString(2, txNAMA.getText());
+                PS.setString(3, txALAMAT.getText());
+                PS.executeUpdate();
+                cnn.close();
+            }
+        }
+    }
+    private void updatedta ()throws SQLException{
+        Connection cnn = koneksi();
+        if(!cnn.isClosed()){
+            PreparedStatement PS = cnn.prepareStatement("UPDATE mhs SET NAMA=?, ALAMAT=? WHERE NIM = ?;");
+            PS.setString(1, txNAMA.getText());
+            PS.setString(2, txALAMAT.getText());
+            PS.setString(3, txNIM.getText());
+            PS.executeUpdate();
+            cnn.close();
+        }
+    }
+    
     private void destroydta (String nim) throws SQLException{
         //String sql = "DELETE FROM mhs WHERE NIM = '?';";
         Connection cnn = koneksi();
@@ -47,6 +73,7 @@ public class fMahasiswa extends javax.swing.JFrame {
             PreparedStatement PS = cnn.prepareStatement("DELETE FROM mhs WHERE NIM = ?;");
             PS.setString(1, nim);
             PS.executeUpdate();
+            cnn.close();
         }
     }
     private void tombol (boolean opsi){
@@ -151,23 +178,28 @@ public class fMahasiswa extends javax.swing.JFrame {
 
         txALAMAT.setText("jTextField1");
 
-        cBARU.setText("Baru");
+        cBARU.setText("ADD");
         cBARU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cBARUActionPerformed(evt);
             }
         });
 
-        cUBAH.setText("Ubah");
+        cUBAH.setText("UPDATE");
+        cUBAH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cUBAHActionPerformed(evt);
+            }
+        });
 
-        cHAPUS.setText("Hapus");
+        cHAPUS.setText("DELETE");
         cHAPUS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cHAPUSActionPerformed(evt);
             }
         });
 
-        cTUTUP.setText("Tutup");
+        cTUTUP.setText("CLOSE");
         cTUTUP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cTUTUPActionPerformed(evt);
@@ -250,7 +282,25 @@ public class fMahasiswa extends javax.swing.JFrame {
     }//GEN-LAST:event_TMMouseClicked
 
     private void cBARUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBARUActionPerformed
-        // TODO add your handling code here:
+        if (cBARU.getText().equals("ADD")){
+            cBARU.setText("SAVE");
+            cTUTUP.setText("CANCEL");
+            cUBAH.setEnabled(false);
+            cHAPUS.setEnabled(false);
+            cleartextField();
+            fieldIsian(true);
+        }else{
+            cBARU.setText("ADD");
+            cTUTUP.setText("CLOSE");
+            try {
+                storedta();
+                ListDataTable();
+            } catch (SQLException ex) {
+                Logger.getLogger(fMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            cleartextField();
+            fieldIsian(false);
+        }
     }//GEN-LAST:event_cBARUActionPerformed
 
     private void cTUTUPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cTUTUPActionPerformed
@@ -267,6 +317,30 @@ public class fMahasiswa extends javax.swing.JFrame {
             Logger.getLogger(fMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cHAPUSActionPerformed
+
+    private void cUBAHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cUBAHActionPerformed
+        if (cUBAH.getText().equals("UPDATE")){
+            cUBAH.setText("SAVE");
+            cTUTUP.setText("CANCEL");
+            cBARU.setEnabled(false);
+            cHAPUS.setEnabled(false);
+            fieldIsian(true);
+            txNIM.setEditable(false);
+        }else{
+            cUBAH.setText("UPDATE");
+            cTUTUP.setText("CLOSE");
+            try {
+                updatedta();
+                ListDataTable();
+            } catch (SQLException ex) {
+                Logger.getLogger(fMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            cleartextField();
+            fieldIsian(false);
+            cBARU.setEnabled(true);
+            cUBAH.setEnabled(false);
+        }
+    }//GEN-LAST:event_cUBAHActionPerformed
 
     /**
      * @param args the command line arguments
