@@ -28,7 +28,7 @@ public class Pertemuan10 {
             
             System.out.println("Nama  : "+res.getString("NAMA"));
             System.out.println("NIM   : "+res.getString("NIM"));
-            System.out.println("Prodi : "+res.getString("PRODI"));
+            //System.out.println("Prodi : "+res.getString("PRODI"));
             System.out.println("Alamat: "+res.getString("ALAMAT"));
         }
     }

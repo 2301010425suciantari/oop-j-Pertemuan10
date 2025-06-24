@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -216,16 +217,14 @@ public class fMahasiswa extends javax.swing.JFrame {
                     .addComponent(txAlamat)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(cBARU)
                         .addGap(18, 18, 18)
                         .addComponent(cUBAH)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(cHAPUS)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cTUTUP)
-                        .addGap(24, 24, 24))
+                        .addComponent(cTUTUP))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlabel1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,18 +303,54 @@ public class fMahasiswa extends javax.swing.JFrame {
     }//GEN-LAST:event_cBARUActionPerformed
 
     private void cTUTUPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cTUTUPActionPerformed
-        System.exit(0);
+        if (cTUTUP.getText().equals("CLOSE")){
+            int jwb = JOptionPane.showOptionDialog(this, 
+                        "Yakin akan menutup aplikasi", 
+                        "Konfirmasi Tutup Aplikasi", 
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.ERROR_MESSAGE, 
+                        null, null, null);
+            if(jwb == JOptionPane.YES_OPTION){
+                System.exit(0);
+            }
+        }else{
+            cTUTUP.setText("CLOSE");
+            cBARU.setText("NEW");
+            cUBAH.setText("UPDATE");
+            cBARU.setEnabled(true);
+            cHAPUS.setEnabled(false);
+            cUBAH.setEnabled(false);
+            cleartextField();
+            fieldIsian(false);
+        }       
     }//GEN-LAST:event_cTUTUPActionPerformed
 
     private void cHAPUSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cHAPUSActionPerformed
-        String nim = txNIM.getText();
-        
-        try {
-            destroydta(nim);
-            ListDataTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(fMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+        if (cHAPUS.getText().equals("DELETE")){
+            
+            String nim = txNIM.getText();
+            int jwb = JOptionPane.showOptionDialog(this, 
+                    "Yakin akan Menghapus data dengan NIM: "+ nim, 
+                    "Konfirmasi Hapus Data", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.ERROR_MESSAGE, 
+                    null, null, null);
+            if (jwb == JOptionPane.YES_OPTION){
+                try {
+                destroydta(nim);
+                ListDataTable();
+                } catch (SQLException ex) {
+                    Logger.getLogger(fMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                cleartextField();
+                fieldIsian(false);
+                cBARU.setEnabled(true);
+                cUBAH.setEnabled(false);
+                cHAPUS.setEnabled(false);
+                
+            }     
         }
+        
     }//GEN-LAST:event_cHAPUSActionPerformed
 
     private void cUBAHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cUBAHActionPerformed
